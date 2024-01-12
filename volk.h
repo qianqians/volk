@@ -70,7 +70,7 @@ struct VolkDeviceTable;
  *
  * Returns VK_SUCCESS on success and VK_ERROR_INITIALIZATION_FAILED otherwise.
  */
-VkResult volkInitialize(void);
+VkResult volkInitialize(const char* vkICD);
 
 /**
  * Initialize library by providing a custom handler to load global symbols.
