@@ -4,7 +4,7 @@ cmake_policy(SET CMP0048 NEW) # project(... VERSION ...) support
 
 project(volk VERSION 
 # VOLK_GENERATE_VERSION
-275
+282
 # VOLK_GENERATE_VERSION
   LANGUAGES C
 )
@@ -12,7 +12,7 @@ project(volk VERSION
 # CMake 3.12 changes the default behaviour of option() to leave local variables
 # unchanged if they exist (which we want), but we must work with older CMake versions.
 if(NOT DEFINED VOLK_STATIC_DEFINES)
-  option(VOLK_STATIC_DEFINES "Additional defines for building the volk static library, e.g. Vulkan platform defines" "")
+  set(VOLK_STATIC_DEFINES "" CACHE STRING "Additional defines for building the volk static library, e.g. Vulkan platform defines")
 endif()
 if(NOT DEFINED VOLK_PULL_IN_VULKAN)
   option(VOLK_PULL_IN_VULKAN "Vulkan as a transitive dependency" ON)
@@ -24,7 +24,7 @@ if(NOT DEFINED VOLK_HEADERS_ONLY)
   option(VOLK_HEADERS_ONLY "Add interface library only" OFF)
 endif()
 if(NOT DEFINED VULKAN_HEADERS_INSTALL_DIR)
-  option(VULKAN_HEADERS_INSTALL_DIR "Where to get the Vulkan headers" "")
+  set(VULKAN_HEADERS_INSTALL_DIR "" CACHE PATH "Where to get the Vulkan headers")
 endif()
 
 # -----------------------------------------------------
@@ -41,7 +41,7 @@ if(NOT VOLK_HEADERS_ONLY OR VOLK_INSTALL)
     target_compile_definitions(volk PUBLIC ${VOLK_STATIC_DEFINES})
   endif()
   if (NOT WIN32)
-    target_link_libraries(volk PUBLIC dl)
+    target_link_libraries(volk PUBLIC ${CMAKE_DL_LIBS})
   endif()
 endif()
 
@@ -55,7 +55,7 @@ target_include_directories(volk_headers INTERFACE
   $<INSTALL_INTERFACE:include>
 )
 if (NOT WIN32)
-  target_link_libraries(volk_headers INTERFACE dl)
+  target_link_libraries(volk_headers INTERFACE ${CMAKE_DL_LIBS})
 endif()
 
 # -----------------------------------------------------
